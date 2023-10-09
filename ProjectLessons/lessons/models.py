@@ -36,6 +36,7 @@ class LessonUsers(models.Model):
         percent_viewed = self.viewing_time * 100 / length_video
         if percent_viewed > 80:
             self.viewed = True
+            self.save()
 
 # Сущность продукта
 class Product(models.Model):
