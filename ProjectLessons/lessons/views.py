@@ -66,9 +66,13 @@ class ProductViewSet(viewsets.ModelViewSet):
         for product in result['product']:
             viewing_objects = LessonUsers.objects.filter(lesson=product['lesson']['pk'])
             product['lesson']['viewing']=[]
+            views_counter = 0
             for viewing in viewing_objects:
+                if viewing.viewed:
+                    views_counter += 1
                 product['lesson']['viewing'].append({'viewing_time': viewing.viewing_time, 'viewed': viewing.viewed,
                                                     'user': viewing.user.mail})
+            product['lesson']['views_counter'] = views_counter
         return Response(result)
 
 class LessonUsersViewSet(viewsets.ModelViewSet):
