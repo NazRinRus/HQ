@@ -58,6 +58,19 @@ class ProductViewSet(viewsets.ModelViewSet):
         result['lesson'] = lesson
         return Response(result)
 
+    def list(self, request):
+        queryset = self.queryset
+        products = self.serializer_class(queryset, many=True).data
+        result = {}
+        result['product'] = products
+        for product in result['product']:
+            viewing_objects = LessonUsers.objects.filter(lesson=product['lesson']['pk'])
+            product['lesson']['viewing']=[]
+            for viewing in viewing_objects:
+                product['lesson']['viewing'].append({'viewing_time': viewing.viewing_time, 'viewed': viewing.viewed,
+                                                    'user': viewing.user.mail})
+        return Response(result)
+
 class LessonUsersViewSet(viewsets.ModelViewSet):
     queryset = LessonUsers.objects.all()
     serializer_class = LessonUsersSerializer

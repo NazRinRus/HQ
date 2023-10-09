@@ -29,16 +29,16 @@ class LessonSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=False)
     video = serializers.CharField(required=False)
     length_video = serializers.IntegerField(required=False) # в секундах
-    #viewing = serializers.PrimaryKeyRelatedField(many=True, read_only=True)#
+    #viewing = LessonUsersSerializer(required=False, many=True)
 
     class Meta:
         model = Lesson
-        fields = ('name', 'video', 'length_video')
+        fields = ('pk', 'name', 'video', 'length_video', 'viewing')
 
 class LessonUsersSerializer(serializers.ModelSerializer):
     viewing_time = serializers.IntegerField(required=False)
     viewed = serializers.BooleanField(required=False)
-    #viewing = LessonSerializer(required=False, many=True)
+
 
     class Meta:
         model = LessonUsers
@@ -50,4 +50,3 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ('name', 'lesson')
-

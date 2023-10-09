@@ -51,3 +51,6 @@ class Product(models.Model):
 class ProductUsers(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'id: {self.pk}, product: {self.product}, user: {self.user}'
