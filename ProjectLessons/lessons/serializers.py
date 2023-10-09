@@ -49,4 +49,4 @@ class ProductSerializer(serializers.ModelSerializer):
     lesson = LessonSerializer(required=False)
     class Meta:
         model = Product
-        fields = ('name', 'lesson')
+        fields = ('pk', 'name', 'lesson')

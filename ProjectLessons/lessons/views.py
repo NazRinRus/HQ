@@ -64,15 +64,25 @@ class ProductViewSet(viewsets.ModelViewSet):
         result = {}
         result['product'] = products
         for product in result['product']:
+
+            product_user = ProductUsers.objects.filter(product=product['pk'])
+            product['sum_product_user'] = product_user.count()
+
+            all_users = Users.objects.all().count()
+            product['popularity'] = product['sum_product_user']/all_users * 100
+
             viewing_objects = LessonUsers.objects.filter(lesson=product['lesson']['pk'])
             product['lesson']['viewing']=[]
             views_counter = 0
+            sum_viewing_time = 0
             for viewing in viewing_objects:
                 if viewing.viewed:
                     views_counter += 1
+                sum_viewing_time += viewing.viewing_time
                 product['lesson']['viewing'].append({'viewing_time': viewing.viewing_time, 'viewed': viewing.viewed,
                                                     'user': viewing.user.mail})
             product['lesson']['views_counter'] = views_counter
+            product['lesson']['sum_viewing_time'] = sum_viewing_time
         return Response(result)
 
 class LessonUsersViewSet(viewsets.ModelViewSet):
