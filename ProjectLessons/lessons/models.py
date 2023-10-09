@@ -25,7 +25,7 @@ class LessonUsers(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     viewing_time = models.IntegerField('Длительность просмотра')
-    viewed = models.BooleanField('Просмотрено', default=False) # показатель просмотра видео
+    viewed = models.BooleanField('Просмотрено') # показатель просмотра видео
 
     def __str__(self):
         return f'id: {self.pk}, lesson: {self.lesson}, user: {self.user}, viewing_time: {self.viewing_time}, viewed: {self.viewed}'
@@ -36,7 +36,9 @@ class LessonUsers(models.Model):
         percent_viewed = self.viewing_time * 100 / length_video
         if percent_viewed > 80:
             self.viewed = True
-            self.save()
+        else:
+            self.viewed = False
+        self.save()
 
 # Сущность продукта
 class Product(models.Model):
